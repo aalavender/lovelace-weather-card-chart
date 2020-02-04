@@ -1,100 +1,16 @@
 const locale = {
-  da: {
-    tempHi: "Temperatur",
-    tempLo: "Temperatur nat",
-    precip: "Nedbør",
-    uPress: "hPa",
-    uSpeed: "m/s",
-    uPrecip: "mm",
-    cardinalDirections: [
-      'N', 'N-NØ', 'NØ', 'Ø-NØ', 'Ø', 'Ø-SØ', 'SØ', 'S-SØ',
-      'S', 'S-SV', 'SV', 'V-SV', 'V', 'V-NV', 'NV', 'N-NV', 'N'
-    ]
-  },
-  de: {
-    tempHi: "Höchsttemperatur",
-    tempLo: "Tiefsttemperatur",
-    precip: "Niederschlag",
-    uPress: "hPa",
-    uSpeed: "m/s",
-    uPrecip: "mm",
-    cardinalDirections: [
-      'N', 'N-NO', 'NO', 'O-NO', 'O', 'O-SO', 'SO', 'S-SO',
-      'S', 'S-SW', 'SW', 'W-SW', 'W', 'W-NW', 'NW', 'N-NW', 'N'
-    ]
-  },
   en: {
     tempHi: "Temperature",
     tempLo: "Temperature night",
-    precip: "Precipitations",
+    precip: "precipitation_probability",
     uPress: "hPa",
     uSpeed: "m/s",
-    uPrecip: "mm",
+    uPrecip: "%",
     cardinalDirections: [
       'N', 'N-NE', 'NE', 'E-NE', 'E', 'E-SE', 'SE', 'S-SE',
       'S', 'S-SW', 'SW', 'W-SW', 'W', 'W-NW', 'NW', 'N-NW', 'N'
     ]
   },
-  es: {
-    tempHi: "Temperatura máxima",
-    tempLo: "Temperatura mínima",
-    precip: "Precipitations",
-    uPress: "hPa",
-    uSpeed: "m/s",
-    uPrecip: "mm",
-    cardinalDirections: [
-      'N', 'N-NE', 'NE', 'E-NE', 'E', 'E-SE', 'SE', 'S-SE',
-      'S', 'S-SO', 'SO', 'O-SO', 'O', 'O-NO', 'NO', 'N-NO', 'N'
-    ]
-  },
-  fr: {
-    tempHi: "Température",
-    tempLo: "Température nuit",
-    precip: "Précipitations",
-    uPress: "hPa",
-    uSpeed: "m/s",
-    uPrecip: "mm",
-    cardinalDirections: [
-      'N', 'N-NE', 'NE', 'E-NE', 'E', 'E-SE', 'SE', 'S-SE',
-      'S', 'S-SO', 'SO', 'O-SO', 'O', 'O-NO', 'NO', 'N-NO', 'N'
-    ]
-  },
-  nl: {
-    tempHi: "Maximum temperatuur",
-    tempLo: "Minimum temperatuur",
-    precip: "Neerslag",
-    uPress: "hPa",
-    uSpeed: "m/s",
-    uPrecip: "mm",
-    cardinalDirections: [
-      'N', 'N-NO', 'NO', 'O-NO', 'O', 'O-ZO', 'ZO', 'Z-ZO',
-      'Z', 'Z-ZW', 'ZW', 'W-ZW', 'W', 'W-NW', 'NW', 'N-NW', 'N'
-    ]
-  },
-  ru: {
-    tempHi: "Температура",
-    tempLo: "Температура ночью",
-    precip: "Осадки",
-    uPress: "гПа",
-    uSpeed: "м/с",
-    uPrecip: "мм",
-    cardinalDirections: [
-      'С', 'С-СВ', 'СВ', 'В-СВ', 'В', 'В-ЮВ', 'ЮВ', 'Ю-ЮВ',
-      'Ю', 'Ю-ЮЗ', 'ЮЗ', 'З-ЮЗ', 'З', 'З-СЗ', 'СЗ', 'С-СЗ', 'С'
-    ]
-  },
-  sv: {
-    tempHi: "Temperatur",
-    tempLo: "Temperatur natt",
-    precip: "Nederbörd",
-    uPress: "hPa",
-    uSpeed: "m/s",
-    uPrecip: "mm",
-    cardinalDirections: [
-      'N', 'N-NO', 'NO', 'O-NO', 'O', 'O-SO', 'SO', 'S-SO',
-      'S', 'S-SV', 'SV', 'V-SV', 'V', 'V-NV', 'NV', 'N-NV', 'N'
-    ]
-  }
 };
 
 class WeatherCardChart extends Polymer.Element {
@@ -143,6 +59,35 @@ class WeatherCardChart extends Polymer.Element {
           align-items: center;
           margin: 0px 3px 0px 16px;
         }
+        .aqi {
+          display: flex;
+          align-items: center;
+          font-size: 20px;
+          color:white;
+          margin-left: 10px;
+          padding: 5px 5px 5px 5px;
+        }
+        .aqi_level_0_bg {
+          background-color: #40c057;
+        }
+        .aqi_level_1_bg{
+          background-color: #82c91e;
+        }
+        .aqi_level_2_bg {
+          background-color: #f76707;
+        }
+        .aqi_level_3_bg {
+          background-color: #e03131;
+        }
+        .aqi_level_4_bg {
+          background-color: #841c3c;
+        }
+        .aqi_level_5_bg{
+          background-color: #540822;
+        }
+        .alarm {
+          background-color: rgb(21, 123, 255)
+        }
       </style>
       <ha-card header="[[title]]">
         <div class="card">
@@ -154,6 +99,13 @@ class WeatherCardChart extends Polymer.Element {
             <template is="dom-if" if="[[!tempObj]]">
               <div on-click="_weatherAttr">[[roundNumber(weatherObj.attributes.temperature)]]<sup>[[getUnit('temperature')]]</sup></div>
             </template>
+            
+            <div class="aqi">
+              <template is="dom-if" if="[[weatherObj.attributes.aqi]]">
+                <div class$ = "aqi [[aqiLevel(weatherObj.attributes.aqi.aqi)]]">[[roundNumber(weatherObj.attributes.aqi.aqi)]]</div>
+              </template>
+            </div>
+            </div>
           </div>
           <div class="attributes" on-click="_weatherAttr">
             <div>
@@ -168,7 +120,7 @@ class WeatherCardChart extends Polymer.Element {
             </div>
             <div>
               <ha-icon icon="hass:[[getWindDirIcon(windBearing)]]"></ha-icon> [[getWindDir(windBearing)]]<br>
-              <ha-icon icon="hass:weather-windy"></ha-icon> [[computeWind(weatherObj.attributes.wind_speed)]] [[ll('uSpeed')]]
+              <ha-icon icon="hass:weather-windy"></ha-icon> [[getWindLevel(weatherObj.attributes.wind_speed)]]
             </div>
           </div>
           <ha-chart-base data="[[ChartData]]"></ha-chart-base>
@@ -293,6 +245,48 @@ class WeatherCardChart extends Polymer.Element {
     return locale[this.lang]['cardinalDirections'][parseInt((deg + 11.25) / 22.5)];
   }
 
+  getWindLevel(speed) {
+      //speed: km/h
+    if(speed < 1)
+    {
+        return "无风";
+    }else if(speed < 6){
+        return "软风";
+    }else if(speed < 12){
+        return "轻风";
+    }else if(speed < 20){
+        return "微风";
+    }else if(speed < 29){
+        return "和风";
+    }else if(speed < 39){
+        return "清风";
+    }else if(speed < 50){
+        return "强风";
+    }else if(speed < 62){
+        return "劲风";
+    }else if(speed < 75){
+        return "大风";
+    }else if(speed < 89){
+        return "烈风";
+    }else if(speed < 103){
+        return "狂风";
+    }else if(speed < 117){
+        return "暴风";
+    }else if(speed < 150){
+        return "台风";
+    }else if(speed < 184){
+        return "强台风";
+    }else if(speed < 250){
+        return "超强台风";
+    }else{
+        return "超级台风";
+    }
+  }
+
+  aqiLevel(aqi) {
+    return 'aqi_level_'+parseInt(aqi / 50.0)+'_bg';
+  }
+
   drawChart() {
     var data = this.weatherObj.attributes.forecast.slice(0,9);
     var locale = this._hass.selectedLanguage || this._hass.language;
@@ -313,7 +307,7 @@ class WeatherCardChart extends Polymer.Element {
       dateTime.push(new Date(d.datetime));
       tempHigh.push(d.temperature);
       tempLow.push(d.templow);
-      precip.push(d.precipitation);
+      precip.push(d.precipitation_probability);
     }
     var style = getComputedStyle(document.body);
     var textColor = style.getPropertyValue('--primary-text-color');
